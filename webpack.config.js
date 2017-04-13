@@ -75,31 +75,42 @@ if (production) {
 
 }
 
-module.exports = {
-    debug: !production,
-    devtool: production ? false : 'source-map',
-  
-    entry: './src/simplebar',
-  
-    devServer: {
-        contentBase: './demo'
-    },
-  
+let base = {
+  debug: !production,
+  devtool: production ? false : 'source-map',
+
+  devServer: {
+    contentBase: './demo'
+  },
+
+  module: {
+    loaders
+  },
+
+  plugins,
+
+  postcss() {
+    return [autoprefixer];
+  }
+
+};
+module.exports = [
+  Object.assign({}, base, {
+    entry: './src/simplebar-imperative',
     output: {
+      path: 'dist',
+      filename: 'simplebar-imperative.js',
+      libraryTarget: 'umd',
+      library: 'SimpleBar'
+    }
+  }),
+    Object.assign({}, base, {
+      entry: './src/simplebar',
+      output: {
         path: 'dist',
         filename: 'simplebar.js',
         libraryTarget: 'umd',
         library: 'SimpleBar'
-    },
-  
-    module: {
-        loaders
-    },
-  
-    plugins,
-  
-    postcss() {
-        return [autoprefixer];
-    }
-
-};
+      }
+    })
+];
