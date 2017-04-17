@@ -17,8 +17,9 @@
   "scripts": {
     "start": "webpack-dev-server --inline",
     "start:prod": "NODE_ENV=production webpack-dev-server",
+    "start:test": "webpack --config webpack-test.config.js && webpack-dev-server --inline --config webpack-test.config.js --watch",
     "build": "NODE_ENV=production webpack",
-    "test": "grunt travis --verbose"
+    "test": "webpack -w --progress --colors --config webpack-test.config.js --watch"
   },
   "licenses": [
     {
@@ -42,13 +43,20 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-latest": "^6.16.0",
+    "chai": "^3.5.0",
     "css-loader": "^0.25.0",
     "eslint": "^3.5.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "jsdom": "^9.12.0",
+    "mocha": "^3.2.0",
+    "mocha-webpack": "^1.0.0-beta.1",
     "postcss-loader": "^0.13.0",
     "resize-observer-polyfill": "^1.4.1",
-    "style-loader": "^0.13.1",
+    "sinon": "^2.1.0",
+    "style-loader": "^0.16.0",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.1"
+    "webpack-dev-server": "^1.16.1",
+    "webpack-node-externals": "^1.5.4",
+    "webpack-shell-plugin": "^0.5.0"
   }
 }

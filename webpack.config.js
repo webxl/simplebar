@@ -35,7 +35,8 @@ if (production) {
         },
         {
             test: /\.css$/,
-            loader: ExtractTextWebpackPlugin.extract('style-loader', '!css!postcss')
+            loader: 'style!css!postcss'
+          //loader: ExtractTextWebpackPlugin.extract('style-loader', '!css!postcss')
         }
     ];
   
@@ -48,9 +49,9 @@ if (production) {
         // how much they are used in your app
         new webpack.optimize.OccurrenceOrderPlugin(),
     
-        new ExtractTextWebpackPlugin('simplebar.css', {
-            allChunks: true
-        }),
+        // new ExtractTextWebpackPlugin('simplebar.css', {
+        //     allChunks: true
+        // }),
     
         // This plugin minifies all the Javascript code of the final bundle
         new webpack.optimize.UglifyJsPlugin({

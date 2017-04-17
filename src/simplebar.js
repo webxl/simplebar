@@ -18,35 +18,7 @@ export default class SimpleBarDeclarative extends SimpleBar {
     // MutationObserver is IE11+
     if (typeof MutationObserver !== 'undefined') {
       // Mutation observer to observe dynamically added elements
-      const globalObserver = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
-          Array.from(mutation.addedNodes).forEach(addedNode => {
-            if (addedNode.nodeType === 1) {
-              if (addedNode.SimpleBar) return;
-
-              if (addedNode.hasAttribute('data-simplebar')) {
-                new SimpleBar(addedNode, SimpleBarDeclarative.getElOptions(addedNode));
-              } else {
-                Array.from(addedNode.querySelectorAll('[data-simplebar]')).forEach(el => {
-                  new SimpleBar(el, SimpleBarDeclarative.getElOptions(el));
-                });
-              }
-            }
-          });
-
-          Array.from(mutation.removedNodes).forEach(removedNode => {
-            if (removedNode.nodeType === 1) {
-              if (removedNode.hasAttribute('data-simplebar')) {
-                removedNode.SimpleBar && removedNode.SimpleBar.unMount();
-              } else {
-                Array.from(removedNode.querySelectorAll('[data-simplebar]')).forEach(el => {
-                  el.SimpleBar && el.SimpleBar.unMount();
-                });
-              }
-            }
-          });
-        });
-      });
+      const globalObserver = new MutationObserver(this.onMutation);
 
       globalObserver.observe(document, {childList: true, subtree: true});
       this.observer = globalObserver;
@@ -88,6 +60,36 @@ export default class SimpleBarDeclarative extends SimpleBar {
     Array.from(document.querySelectorAll('[data-simplebar]')).forEach(el => {
       if (!el.SimpleBar)
         new SimpleBar(el, SimpleBarDeclarative.getElOptions(el));
+    });
+  }
+
+  static onMutation (mutations) {
+    mutations.forEach(mutation => {
+      Array.from(mutation.addedNodes).forEach(addedNode => {
+        if (addedNode.nodeType === 1) {
+          if (addedNode.SimpleBar) return;
+
+          if (addedNode.hasAttribute('data-simplebar')) {
+          new SimpleBar(addedNode, SimpleBarDeclarative.getElOptions(addedNode));
+          } else {
+            Array.from(addedNode.querySelectorAll('[data-simplebar]')).forEach(el => {
+              new SimpleBar(el, SimpleBarDeclarative.getElOptions(el));
+            });
+          }
+        }
+      });
+
+      Array.from(mutation.removedNodes).forEach(removedNode => {
+    if (removedNode.nodeType === 1) {
+      if (removedNode.hasAttribute('data-simplebar')) {
+        removedNode.SimpleBar && removedNode.SimpleBar.unMount();
+      } else {
+        Array.from(removedNode.querySelectorAll('[data-simplebar]')).forEach(el => {
+          el.SimpleBar && el.SimpleBar.unMount();
+        });
+      }
+    }
+  });
     });
   }
 }
